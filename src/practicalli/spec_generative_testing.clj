@@ -84,11 +84,21 @@
 ;; Testing with spec
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Generate 1000 values to run against the specification
+;; takes over a minute - are all generative tests this slow?
+;; if so, then generative tests should be run less often
+
 ;; spec/check takes a fully-qualified symbol so we use ` here to resolve it in the context of the current namespace.
+
 
 (spec-test/check `deal-cards)
 
-;; run a specific number of tests
+;; => ({:spec #object[clojure.spec.alpha$fspec_impl$reify__2524 0x26debeba "clojure.spec.alpha$fspec_impl$reify__2524@26debeba"],
+;; :clojure.spec.test.check/ret
+;;  {:result true, :pass? true, :num-tests 1000, :time-elapsed-ms 75054, :seed 1591928968683},
+;; :sym practicalli.spec-generative-testing/deal-cards})
+
+
 
 
 ;; How to run a specific number of tests
@@ -100,19 +110,42 @@
 ;; https://clojure.github.io/spec.alpha/clojure.spec.test.alpha-api.html#clojure.spec.test.alpha/check
 
 ;; Run a single check - very quick
-(spec-test/check `deal-cards
-                 {:clojure.spec.test.check/opts {:num-tests 1}})
+
+(spec-test/check
+  `deal-cards
+  {:clojure.spec.test.check/opts {:num-tests 1}})
+
+;; => ({:spec #object[clojure.spec.alpha$fspec_impl$reify__2524 0x26debeba "clojure.spec.alpha$fspec_impl$reify__2524@26debeba"],
+;; :clojure.spec.test.check/ret
+;; {:result true, :pass? true, :num-tests 1, :time-elapsed-ms 0, :seed 1591961775784},
+;; :sym practicalli.spec-generative-testing/deal-cards})
 
 ;; Run 10 checks - very quick
-(spec-test/check `deal-cards
-                 {:clojure.spec.test.check/opts {:num-tests 10}})
+
+(spec-test/check
+  `deal-cards
+  {:clojure.spec.test.check/opts {:num-tests 10}})
+
+;; => ({:spec #object[clojure.spec.alpha$fspec_impl$reify__2524 0x26debeba "clojure.spec.alpha$fspec_impl$reify__2524@26debeba"],
+;; :clojure.spec.test.check/ret {:result true, :pass? true, :num-tests 10, :time-elapsed-ms 6, :seed 1591961778220},
+;; :sym practicalli.spec-generative-testing/deal-cards})
 
 
 ;; Run 100 checks - takes about 3 seconds
-(spec-test/check `deal-cards
-                 {:clojure.spec.test.check/opts {:num-tests 101}})
+
+(spec-test/check
+  `deal-cards
+  {:clojure.spec.test.check/opts {:num-tests 101}})
+
+;; => ({:spec #object[clojure.spec.alpha$fspec_impl$reify__2524 0x26debeba "clojure.spec.alpha$fspec_impl$reify__2524@26debeba"],
+;; :clojure.spec.test.check/ret
+;; {:result true, :pass? true, :num-tests 101, :time-elapsed-ms 2148, :seed 1591961780863},
+;; :sym practicalli.spec-generative-testing/deal-cards})
 
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Using an alias
 ;; The API documentation talks about using ::stc/opts
 ;; Suggestion from Sean Corfield on how to create such an alias
 ;; as the namespace does not exist
