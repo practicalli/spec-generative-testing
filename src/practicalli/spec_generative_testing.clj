@@ -2,8 +2,7 @@
   (:require
    [clojure.spec.alpha :as spec]
    [clojure.spec.gen.alpha :as spec-gen]
-   [clojure.spec.test.alpha :as spec-test]
-   [clojure.spec.test.check]))
+   [clojure.spec.test.alpha :as spec-test]))
 
 ;; Set up project
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -92,12 +91,36 @@
 ;; run a specific number of tests
 
 
-(spec-test/check `deal-cards
-                 {::clojure.spec-test-check/opts {:num-tests 1}})
+;; How to run a specific number of tests
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; clojure.spec.test.alpha/check API reference describes a second argument to the function,
+;; a hash-map that includes options, one of which is :num-tests
+;; The key for the options is a fully qualified namespace, specifically
+;; :clojure.spec.test.check/opts
+;; https://clojure.github.io/spec.alpha/clojure.spec.test.alpha-api.html#clojure.spec.test.alpha/check
 
+;; Run a single check - very quick
 (spec-test/check `deal-cards
-                 {:num-tests 1})
-;; => ({:spec #object[clojure.spec.alpha$fspec_impl$reify__2524 0x26debeba "clojure.spec.alpha$fspec_impl$reify__2524@26debeba"],
-;; :clojure.spec.test.check/ret
-;;  {:result true, :pass? true, :num-tests 1000, :time-elapsed-ms 75054, :seed 1591928968683},
-;; :sym practicalli.spec-generative-testing/deal-cards})
+                 {:clojure.spec.test.check/opts {:num-tests 1}})
+
+;; Run 10 checks - very quick
+(spec-test/check `deal-cards
+                 {:clojure.spec.test.check/opts {:num-tests 10}})
+
+
+;; Run 100 checks - takes about 3 seconds
+(spec-test/check `deal-cards
+                 {:clojure.spec.test.check/opts {:num-tests 101}})
+
+
+;; The API documentation talks about using ::stc/opts
+;; Suggestion from Sean Corfield on how to create such an alias
+;; as the namespace does not exist
+;; (alias 'stc (create-ns 'clojure.spec.test.check))
+
+;; ::stc/opts
+
+;; (spec-test/check `deal-cards
+;;                  {::stc/opts {:num-tests 1}})
+
+;; Code seems much cleaner if :clojure.spec.test.check/opts is used as the key name
