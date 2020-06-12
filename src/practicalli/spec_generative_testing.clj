@@ -157,3 +157,14 @@
 ;;                  {::stc/opts {:num-tests 1}})
 
 ;; Code seems much cleaner if :clojure.spec.test.check/opts is used as the key name
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+;; Test reports
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(spec-test/summarize-results
+  (spec-test/check `deal-cards
+                   {:clojure.spec.test.check/opts {:num-tests 10}}))
