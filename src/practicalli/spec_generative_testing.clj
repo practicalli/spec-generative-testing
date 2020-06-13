@@ -64,7 +64,7 @@
 ;; Specification for function definition
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn regulation-cards-deck
+(defn regulation-card-deck
   [{:keys [::deck ::players] :as game}]
   (apply + (count deck)
          (map #(-> % ::delt-hand count) players)))
@@ -76,8 +76,8 @@
 (spec/fdef deal-cards
   :args (spec/cat :game ::game)
   :ret ::game
-  :fn #(= (regulation-cards-deck (-> % :args :game))
-          (regulation-cards-deck (-> % :ret))))
+  :fn #(= (regulation-card-deck (-> % :args :game))
+          (regulation-card-deck (-> % :ret))))
 
 
 
@@ -168,3 +168,47 @@
 (spec-test/summarize-results
   (spec-test/check `deal-cards
                    {:clojure.spec.test.check/opts {:num-tests 10}}))
+
+
+
+
+;; Adding more functions and specifications
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Define a function to calculate the winning hand of a game
+
+(defn winning-player
+  [players]
+  ;; calculate winning player from each of players hands
+  ;; return player
+  )
+
+
+;; Initially we can return an explicit player data structure
+(defn winning-player
+  [players]
+  ;; calculate winning player from each of players hands
+  ;; return player
+  #:practicalli.player-won
+  {:name      "Jenny Nada",
+   :score     225,
+   :delt-hand [[9 :hearts] [4 :clubs] [8 :hearts] [10 :clubs] [:queen :spades]]})
+
+
+;; rather than explicitly add the data, we can generate the data
+;; until we write the real algorithm
+
+
+(spec-gen/generate (spec/gen ::player))
+
+
+;; Then
+(defn winning-player
+  [players]
+  ;; calculate winning player from each of players hands
+  ;; return player
+
+  (spec-gen/generate (spec/gen ::player)))
+
+;; This is just a temporary place holder until the algorithm of the function
+;; is created
