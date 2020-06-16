@@ -17,12 +17,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-
 (spec-gen/generate (spec/gen int?))
 
 (spec-gen/generate (spec/gen nil?))
 
 (spec-gen/sample (spec/gen string?))
+
+
+(spec-gen/generate (spec/gen #{:club :diamond :heart :spade}))
 
 (spec-gen/sample (spec/gen #{:club :diamond :heart :spade}))
 
@@ -37,6 +39,7 @@
 
 (def suit? #{:clubs :diamonds :hearts :spades})
 (def rank? (into #{:jack :queen :king :ace} (range 2 11)))
+
 (spec/def ::playing-card (spec/tuple rank? suit?))
 (spec/def ::delt-hand (spec/* ::playing-card))
 
@@ -212,3 +215,7 @@
 
 ;; This is just a temporary place holder until the algorithm of the function
 ;; is created
+
+;; call winning players with mock data (not checked if not instrumented)
+;; and get a generated player value back.
+#_(winning-player "mock data")
