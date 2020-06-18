@@ -1,4 +1,14 @@
 (ns practicalli.card-game
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Specifications for a simple card game
+;;
+;; Author(s): John Stevenson
+;;
+;; Specifications and custom predicate functions for
+;; a simple playing card game
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
   (:require
    [practicalli.card-game-specifications]
    [clojure.spec.alpha :as spec]
