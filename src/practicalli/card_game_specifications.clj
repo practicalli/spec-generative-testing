@@ -63,3 +63,21 @@
   :args (spec/cat :players ::players)
   :ret ::player)
 
+;; Instrument functions
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Define a collection of functions to instrument
+
+(def ^:private function-specifications
+  [`card-game/deal-cards
+   `card-game/winning-player])
+
+;; simple helper functions
+
+(defn instrument-all-functions
+  []
+  (spec-test/instrument function-specifications))
+
+(defn unstrument-all-functions
+  []
+  (spec-test/unstrument function-specifications))
