@@ -1,4 +1,3 @@
-(ns practicalli.card-game
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Specifications for a simple card game
 ;;
@@ -9,39 +8,42 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+(ns practicalli.card-game-specifications
   (:require
-   [practicalli.card-game-specifications]
+   [practicalli.card-game :as card-game]
    [clojure.spec.alpha :as spec]
-   [clojure.spec.gen.alpha :as spec-gen]))
+   [clojure.spec.test.alpha :as spec-test]))
 
 
 
-(defn regulation-card-deck
-  [{:keys [::deck ::players] :as game}]
-  (apply + (count deck)
-         (map #(-> % ::delt-hand count) players)))
-
-
-(defn deal-cards
-  [game]
-  game)
-
-
-(defn winning-hand?
-  [players]
-  ;; calculate winning hand from each of players hands
-  ;; return player
-  (spec-gen/generate (spec/gen :practicalli.card-game/player))
-
-  )
-
-;; REPL testing
+;; Card Specifications
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(comment
+;; Custom predicate functions to be used as specifications
+
+(def suit? #{:clubs :diamonds :hearts :spades})
+(def rank? (into #{:jack :queen :king :ace} (range 2 11)))
 
 
-  ;; Call wining hand with a generated value from the players specification
-  (winning-hand? (spec-gen/generate (spec/gen :practicalli.card-game/players)))
+(spec/def ::playing-card (spec/tuple rank? suit?))
 
-  )
+
+;; Player specifications
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(spec/def ::name string?)
+(spec/def ::score int?)
+
+(spec/def ::player
+  (spec/keys :req [::name ::score ::delt-hand]))
+
+
+;; Game specifications
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(spec/def ::deck (spec/* ::playing-card))
+
+(spec/def ::players (spec/* ::player))
+
+(spec/def ::game (spec/keys :req [::players ::deck]))
+
