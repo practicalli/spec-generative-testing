@@ -47,3 +47,19 @@
 
 (spec/def ::game (spec/keys :req [::players ::deck]))
 
+
+
+;; Function Specifications
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(spec/fdef deal-cards
+  :args (spec/cat :game ::game)
+  :ret ::game
+  :fn #(= (card-game/regulation-card-deck (-> % :args :game))
+          (card-game/regulation-card-deck (-> % :ret))))
+
+
+(spec/fdef winning-player
+  :args (spec/cat :players ::players)
+  :ret ::player)
+
